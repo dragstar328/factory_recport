@@ -2,14 +2,41 @@
 
 {% block content %}
     <div class="post">
-        {% if post.created_date %}
-            <div class="date">
-                {{ post.created_date }}
-            </div>
+        <div class="date">
+            {{ post.created_date }}
+        </div>
+        {% if user.is_authenticated %}
+          <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+          <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
         {% endif %}
         <h1>{{ post.title }}</h1>
+        <img src="{{post.image.large.url}}" />
+        <div>
+           <a class="btn btn-default" href="{% url 'like_post' pk=post.pk %}"><span class=" glyphicon glyphicon-thumbs-up"></span></a><button class="btn btn-default">{{post.like_set.count}}</button>
+        </div>
+        <br>
+        <div>
         <p>{{ post.text|linebreaksbr }}</p>
-        <img src="{{post.image.large.url}}" /> 
+        </div>
     </div>
+<h2>Comments</h2>
+<hr>
+{% for comment in post.comment_set.all %}
+    <div class="comment">
+        <div class="date">
+          {{ comment.created_date }}
+          <a class="btn btn-default" href="{% url 'remove_comment' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+        </div>
+        <strong>{{ comment.author }}</strong>
+        <p>{{ comment.text|linebreaks }}</p>
+        <div>
+           <a class="btn btn-default" href="{%url 'like_comment' pk=comment.pk %}"><span class=" glyphicon glyphicon-thumbs-up"></span></a><button class="btn btn-default">{{comment.commentlike_set.count}}</button>
+        </div>
+
+    </div>
+{% empty %}
+    <p>No comments here yet :(</p>
+{% endfor %}
+    <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
 {% endblock %}
 
