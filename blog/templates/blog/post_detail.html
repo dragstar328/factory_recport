@@ -6,13 +6,13 @@
             {{ post.created_date }}
         </div>
         {% if user.is_authenticated %}
-          <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-          <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+          <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="fas fa-pencil-alt"></span></a>
+          <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="fas fa-trash-alt"></span></a>
         {% endif %}
-        <h1>{{ post.title }}</h1>
+        <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
         <img src="{{post.image.large.url}}" />
         <div>
-           <a class="btn btn-default" href="{% url 'like_post' pk=post.pk %}"><span class=" glyphicon glyphicon-thumbs-up"></span></a><button class="btn btn-default">{{post.like_set.count}}</button>
+           <a class="btn btn-primary" href="{% url 'like_post' pk=post.pk %}"><span class=" fas fa-thumbs-up fa-lg"></span></a><button class="btn btn-primary">{{post.like_set.count}}</button>
         </div>
         <br>
         <div>
@@ -21,16 +21,18 @@
     </div>
 <h2>Comments</h2>
 <hr>
+
+
 {% for comment in post.comment_set.all %}
     <div class="comment">
         <div class="date">
           {{ comment.created_date }}
-          <a class="btn btn-default" href="{% url 'remove_comment' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+          <a class="btn btn-default" href="{% url 'remove_comment' pk=comment.pk %}"><span class="fas fa-trash-alt"></span></a>
         </div>
         <strong>{{ comment.author }}</strong>
         <p>{{ comment.text|linebreaks }}</p>
         <div>
-           <a class="btn btn-default" href="{%url 'like_comment' pk=comment.pk %}"><span class=" glyphicon glyphicon-thumbs-up"></span></a><button class="btn btn-default">{{comment.commentlike_set.count}}</button>
+           <a class="btn btn-primary" href="{%url 'like_comment' pk=comment.pk %}"><span class="fas fa-thumbs-up fa-lg"></span></a><button class="btn btn-primary">{{comment.commentlike_set.count}}</button>
         </div>
 
     </div>
